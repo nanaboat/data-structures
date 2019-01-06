@@ -31,8 +31,9 @@ class PriorityQueue:
         while i > 1:
             if self._heap[i]._key > self._heap[i // 2]._key:
                 # swap positions
-                self._heap[i], self._heap[i // 2] = self._heap[i // 2],\
-                                                        self._heap[i]
+                temp = self._heap[i]
+                self._heap[i] = self._heap[i // 2]
+                self._heap[i // 2] = temp
 
             i = i // 2
 
@@ -119,6 +120,12 @@ class Test_Priority_Queue(TestCase):
     def test_higher_priority(self):
         self.heap.change_priority(4, 15)
         self.assertEqual('x', self.heap.get_max())
+
+    def test_heapify(self):
+        alist = [QNode(34, 'Frank'), QNode(12, 'G'), QNode(9, 'm')]
+        heap = PriorityQueue()
+        heap.heapify(alist)
+        self.assertEqual('Frank', heap.del_max())
 
 
 if __name__ == '__main__':
