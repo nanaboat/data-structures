@@ -48,7 +48,8 @@ class PriorityQueue:
         return val
 
     def _sift_down(self, i):
-        while i * 2 <= self._size:
+        k = self._size
+        while i * 2 <= k:
             j = self._max_child(i)
             if self._heap[i]._key < self._heap[j]._key:
                 # swap positions
@@ -93,6 +94,25 @@ class PriorityQueue:
     def __len__(self):
         return self._size
 
+    def __repr__(self):
+        return self._heap[1:].__repr__()
+
+    def __iter__(self):
+        return self._heap[1:].__iter__()
+
+    @staticmethod
+    def heap_sort(alist):
+        heap = PriorityQueue()
+        heap.heapify(alist)
+        while heap._size > 0:
+            temp = heap._heap[1]
+            heap._heap[1] = heap._heap[heap._size]
+            heap._heap[heap._size] = temp
+            heap._size -= 1
+            heap._sift_down(1)
+        alist = heap._heap[1:]
+        return alist
+
 
 class Test_Priority_Queue(TestCase):
 
@@ -126,6 +146,13 @@ class Test_Priority_Queue(TestCase):
         heap = PriorityQueue()
         heap.heapify(alist)
         self.assertEqual('Frank', heap.del_max())
+
+    def test_heap_sort(self):
+        alist = [QNode(34, 'Frank'), QNode(12, 'G'), QNode(9, 'm')]
+        res = self.heap.heap_sort(alist)
+        self.assertEqual(res[0]._value, alist[2]._value)
+        self.assertEqual(res[1]._value, alist[1]._value)
+        self.assertEqual(res[2]._value, alist[0]._value)
 
 
 if __name__ == '__main__':
